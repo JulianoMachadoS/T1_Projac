@@ -1,0 +1,12 @@
+projarq/
+├── docker-compose.yml
+├── i-educar/
+│   ├── docker/
+│   ├── docker-compose.yml
+│   └── ...
+├── Moodle/
+│   └── docker-compose.yml
+└── integration/
+    ├── Dockerfile
+    ├── package.json
+    └── src/
