@@ -2,6 +2,8 @@
 # Teste de ponta a ponta: cria uma turma no i-Educar, sincroniza e confere o curso no Moodle e o vinculo.
 # Rodar na raiz, com o ambiente de pe (./instalar.sh). No fim apaga o que criou.
 cd "$(dirname "$0")"
+# Git Bash (Windows): nao deixa ele trocar caminhos como /opt/... por C:/... nos comandos do docker
+export MSYS_NO_PATHCONV=1
 
 echo "1) Criando uma turma nova no i-Educar (copia da turma 3)..."
 TURMA=$(docker compose exec -T php php artisan tinker --execute="\$t = App\Models\LegacySchoolClass::find(3)->replicate(); \$t->nm_turma = 'Turma Teste Integracao'; \$t->save(); echo \$t->cod_turma;" | tail -n 1)

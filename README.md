@@ -10,6 +10,8 @@ Pré-requisito: Docker com Docker Compose.
 ./instalar.sh
 ```
 
+**No Windows:** com o Docker Desktop aberto, dê duplo clique em `instalar.bat`. Ele usa o terminal que vem com o Git para Windows, sem precisar instalar mais nada. Os outros comandos deste README podem ser rodados no **Git Bash**.
+
 ## O que o comando faz
 
 1. Cria o arquivo `.env` com as configurações.

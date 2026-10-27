@@ -2,6 +2,8 @@
 # Sobe o ambiente inteiro e deixa i-Educar e Moodle prontos pra integracao.
 set -e
 cd "$(dirname "$0")"
+# Git Bash (Windows): nao deixa ele trocar caminhos como /opt/... por C:/... nos comandos do docker
+export MSYS_NO_PATHCONV=1
 
 [ -f .env ] || cp .env.example .env
 

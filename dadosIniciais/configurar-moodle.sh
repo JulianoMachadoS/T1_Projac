@@ -1,6 +1,9 @@
 #!/bin/sh
 # Configura o Moodle e grava o token no .env. Rodar na raiz, com os containers de pe.
 
+# Git Bash (Windows): nao deixa ele trocar caminhos como /opt/... por C:/... nos comandos do docker
+export MSYS_NO_PATHCONV=1
+
 # -u daemon: mesmo usuario do apache, senao o cache do moodle fica com dono root
 TOKEN=$(docker compose exec -T -u daemon moodle php < dadosIniciais/moodle/configurar_webservices.php)
 

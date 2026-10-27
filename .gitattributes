@@ -1,0 +1,6 @@
+# o projeto roda dentro de conteineres Linux: no Windows o git converteria as quebras
+# de linha pra CRLF e scripts como instalar.sh e o artisan do i-Educar parariam de funcionar
+* text=auto eol=lf
+
+# .bat e do Windows (cmd), ai o certo e CRLF
+*.bat text eol=crlf
