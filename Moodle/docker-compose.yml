@@ -1,6 +1,6 @@
 services:
   mariadb:
-    image: bitnami/mariadb:latest
+    image: bitnamilegacy/mariadb:11.4 # latest (13.x) é incompatível com o Moodle 5.0
     environment:
       - MARIADB_USER=bn_moodle
       - MARIADB_PASSWORD=bitnami

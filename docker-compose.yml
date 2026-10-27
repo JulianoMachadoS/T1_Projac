@@ -1,16 +1,20 @@
 # projarq/
 # ├── docker-compose.yml   (este arquivo: banco próprio + serviço de integração)
-# ├── i-educar/            (sobe com o docker-compose.yml dele)
-# ├── Moodle/              (sobe com o docker-compose.yml dele)
+# ├── i-educar/            (incluido abaixo via include)
+# ├── Moodle/              (incluido abaixo via include)
 # └── integration/         (NestJS)
+
+include:
+  - i-educar/docker-compose.yml
+  - Moodle/docker-compose.yml
 
 services:
   integration-db:
     image: postgres:17-alpine
     environment:
-      POSTGRES_USER: ${DB_USER:-integration}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-integration}
-      POSTGRES_DB: ${DB_NAME:-integration}
+      POSTGRES_USER: ${INTEGRATION_DB_USER:-integration}
+      POSTGRES_PASSWORD: ${INTEGRATION_DB_PASSWORD:-integration}
+      POSTGRES_DB: ${INTEGRATION_DB_NAME:-integration}
     ports:
       - "5433:5432" # 5432 já é usada pelo postgres do i-Educar
     volumes:
@@ -22,12 +26,15 @@ services:
     environment:
       DB_HOST: integration-db
       DB_PORT: 5432
+    # modo dev: usa o codigo da pasta integration/ e reinicia sozinho quando um arquivo muda
+    command: npm run start:dev
+    volumes:
+      - ./integration:/app
+      - /app/node_modules # node_modules fica o da imagem, nao o do mac
     ports:
       - "3000:3000"
     depends_on:
       - integration-db
-    extra_hosts:
-      - "host.docker.internal:host-gateway" # acesso ao i-Educar (:80) e Moodle (:8080)
 
 volumes:
   integration_db:
