@@ -3,3 +3,6 @@ codigo morto/
 # .env guarda os tokens do i-Educar e do Moodle, nao pode ir pro repositorio
 # use o .env.example como modelo
 .env
+
+# arquivo que o Finder do Mac cria sozinho
+.DS_Store

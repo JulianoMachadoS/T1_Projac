@@ -20,9 +20,10 @@ if ! grep -q '^IEDUCAR_TOKEN=.' .env; then
   until docker compose exec -T postgres pg_isready -q; do sleep 2; done
 
   docker compose exec -T php composer install
-  docker compose exec -T php composer set-permissions
+  # no Windows a pasta compartilhada nao aceita chmod nem link, mas ja e gravavel por todos: so avisa e segue
+  docker compose exec -T php composer set-permissions || echo "Aviso: permissoes nao ajustadas (normal no Windows), seguindo..."
   docker compose exec -T php php artisan key:generate
-  docker compose exec -T php php artisan storage:link
+  docker compose exec -T php php artisan storage:link || echo "Aviso: storage:link nao criado (normal no Windows), seguindo..."
   docker compose exec -T php php artisan migrate --force
   docker compose exec -T php php artisan db:seed --force
   docker compose exec -T php php artisan db:seed --class=DemoSeeder --force
