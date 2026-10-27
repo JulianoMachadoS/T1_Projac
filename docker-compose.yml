@@ -24,8 +24,8 @@ services:
     build: ./integration
     env_file: .env
     environment:
-      DB_HOST: integration-db
-      DB_PORT: 5432
+      INTEGRATION_DB_HOST: integration-db
+      INTEGRATION_DB_PORT: 5432
     # modo dev: usa o codigo da pasta integration/ e reinicia sozinho quando um arquivo muda
     command: npm run start:dev
     volumes:
