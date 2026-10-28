@@ -34,6 +34,51 @@ Os usuários já vêm criados pela instalação, não é preciso cadastrar.
 
 Os dois logins são de administrador.
 
+## Passo a passo: criar uma turma no i-Educar e vê-la no Moodle
+
+**1. Baixar e instalar** (no Terminal do Mac, com o Docker Desktop aberto):
+
+```bash
+git clone https://github.com/JulianoMachadoS/T1_Projac.git
+cd T1_Projac
+./instalar.sh
+```
+
+Espere aparecer **"Pronto!"** no final (a primeira vez leva alguns minutos).
+
+**2. Entrar no i-Educar.** Abra http://localhost no navegador e entre com `admin` / `123456789`.
+
+**3. Abrir o cadastro de turmas.** No menu, clique em **Escola → Cadastros → Turmas** (ou abra direto http://localhost/intranet/educar_turma_lst.php). Na lista de turmas, clique em **Novo**.
+
+**4. Preencher a turma.** Exemplo que funciona com os dados que já vêm instalados:
+
+| Campo | O que escolher |
+|---|---|
+| Ano | o ano atual |
+| Instituição | Prefeitura Municipal de Modelópolis |
+| Escola | Escola de Ensino Fundamental |
+| Curso | Ensino Fundamental |
+| Série | 2º ano |
+| Tipo de turma | Regular |
+| Nome da turma | um nome fácil de achar, ex.: `Turma do Professor` |
+| Máximo de alunos | 25 |
+| Turno | Integral |
+| Ativo | deixe **marcado** |
+
+Os campos com asterisco (*) são obrigatórios; os outros podem ficar em branco. A turma precisa ser do **ano atual** e estar **ativa**, senão a integração não a sincroniza.
+
+**5. Salvar.** Clique em **Salvar** no fim do formulário. A turma aparece na lista de turmas.
+
+**6. Esperar até 1 minuto.** A integração roda sozinha a cada minuto. Para não esperar, rode no Terminal, dentro da pasta `T1_Projac`:
+
+```bash
+curl -X POST http://localhost:3000/sincronizacao/turmas
+```
+
+A resposta deve mostrar `"cursosCriados":1`.
+
+**7. Ver o curso no Moodle.** Abra http://localhost:8080 e entre com `user` / `bitnami`. No menu do topo, clique em **Site administration → Courses → Manage courses and categories** e depois em **Category 1** (ou abra direto http://localhost:8080/course/index.php?categoryid=1). O curso aparece com o **mesmo nome da turma**. Ao abrir o curso, em *Settings*, o campo **Course ID number** mostra `ieducar-turma-<código da turma>`, que indica de qual turma ele veio.
+
 ## O que foi integrado
 
 **Turmas do i-Educar → cursos do Moodle.** Quando uma turma ativa do ano atual é criada no i-Educar, a integração cria o curso correspondente no Moodle e grava o vínculo entre os dois (id da turma ↔ id do curso) no banco próprio. A sincronização roda sozinha a cada minuto e também pode ser disparada pelo endpoint acima.
@@ -69,7 +114,7 @@ Resposta esperada, quando todas as turmas já têm curso:
 {"totalTurmas":21,"cursosCriados":0,"turmasIgnoradas":21,"falhas":[]}
 ```
 
-**3. Criar uma turma e ver o curso aparecer.** No i-Educar, cadastre uma turma em *Escola > Cadastros > Turmas* (http://localhost/intranet/educar_turma_lst.php). Em até 1 minuto, ela aparece como curso no Moodle.
+**3. Criar uma turma e ver o curso aparecer.** Siga o "Passo a passo" acima.
 
 **4. Teste de ponta a ponta automático.** Cria uma turma no i-Educar, sincroniza, confere o curso no Moodle e o vínculo no banco, e apaga o que criou:
 
